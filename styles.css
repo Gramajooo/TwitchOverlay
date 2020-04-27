@@ -1,0 +1,51 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #333;
+}
+
+.target{
+    height: 100px;
+    width: 100px;
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    
+    transform: translateX(-50%);
+}
+
+.drop{
+    width: 150px;
+    transform: rotate(10deg);
+    animation: sway 1s infinite alternate ease-in-out;
+}
+
+.drop .chute{
+
+    width: 100%;    
+}
+.drop .user-image{
+    display: block;
+    margin: 0 auto;
+    height: 60px;
+    width: 60px;
+    margin-top: -10px;
+}
+.drop .avatar{
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+.element {
+    animation: pulse 5s infinite;
+  }
+  
+  @keyframes sway {
+    0% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(10deg);
+    }
+  }
