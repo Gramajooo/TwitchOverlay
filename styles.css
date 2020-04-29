@@ -15,7 +15,9 @@ body{
 }
 
 .drop{
+    position:  fixed;
     width: 150px;
+    display: inline-block;
     transform: rotate(10deg);
     animation: sway 1s infinite alternate ease-in-out;
 }
