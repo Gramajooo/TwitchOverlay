@@ -23,8 +23,8 @@ function doDrop(url, isAvatar = false){
             y: -200,
         },
         velocity: {
-            x: Math.random() * (Math.random() > 0.5 ? -1 : 1) * 2,
-            y: Math.random()
+            x: Math.random() * (Math.random() > 0.5 ? -1 : 1) * 5,
+            y: 2 + Math.random() * 2
         }
     };
     drops.push(drop);    
@@ -33,14 +33,33 @@ function doDrop(url, isAvatar = false){
 }
 
 function updateDropPosition(drop) {
+    if(drop.landed) return;
     drop.element.style.top = drop.location.y + 'px';
     drop.element.style.left = (drop.location.x - (drop.element.clientWidth / 2)) + 'px';
 }
 
 function update(){
     drops.forEach(drop => {
+        if(drop.landed) return;
         drop.location.x += drop.velocity.x;
         drop.location.y += drop.velocity.y;
+        const elementWidth = drop.element.clientWidth / 2;
+        if (drop.location.x + elementWidth >= window.innerWidth){
+            drop.velocity.x = -Math.abs(drop.velocity.x);
+        }else if (drop.location.x - elementWidth < 0) {
+            drop.velocity.x = Math.abs(drop.velocity.x);
+        }
+
+        if(drop.location.y + drop.element.clientHeight >= window.innerHeight){
+            drop.velocity.x = 0;
+            drop.velocity.y = 0;
+            drop.location.y = window.innerHeight - drop.element.clientHeight;
+            drop.landed = true;
+            drop.element.classList.add('landed');
+            const { x } = drop.location;
+            const score = x => ((1-Math.abs(window.innerWidth/2-x))/window.innerWidth/2)*100;
+            console.log(score);
+        }
     });
 }
 
