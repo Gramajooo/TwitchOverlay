@@ -1,6 +1,7 @@
+const target = document.querySelector('.target');
 const drops = [];
 
-function createDropElement(url, isAvatar = false){
+function createDropElement(url, isAvatar = false) {
     const div = document.createElement('div');
     div.className = 'drop';
     div.innerHTML = `
@@ -13,7 +14,7 @@ function createDropElement(url, isAvatar = false){
 }
 
 
-function doDrop(url, isAvatar = false){
+function doDrop(url, isAvatar = false) {
     const element = createDropElement(url, isAvatar);
     const drop = {
         id: Date.now() + Math.random(),
@@ -27,43 +28,47 @@ function doDrop(url, isAvatar = false){
             y: 2 + Math.random() * 2
         }
     };
-    drops.push(drop);    
+    drops.push(drop);
     document.body.appendChild(element);
     updateDropPosition(drop);
 }
 
 function updateDropPosition(drop) {
-    if(drop.landed) return;
+    if (drop.landed) return;
     drop.element.style.top = drop.location.y + 'px';
     drop.element.style.left = (drop.location.x - (drop.element.clientWidth / 2)) + 'px';
 }
 
-function update(){
+function update() {
     drops.forEach(drop => {
-        if(drop.landed) return;
+        if (drop.landed) return;
         drop.location.x += drop.velocity.x;
         drop.location.y += drop.velocity.y;
         const elementWidth = drop.element.clientWidth / 2;
-        if (drop.location.x + elementWidth >= window.innerWidth){
+        if (drop.location.x + elementWidth >= window.innerWidth) {
             drop.velocity.x = -Math.abs(drop.velocity.x);
-        }else if (drop.location.x - elementWidth < 0) {
+        } else if (drop.location.x - elementWidth < 0) {
             drop.velocity.x = Math.abs(drop.velocity.x);
         }
 
-        if(drop.location.y + drop.element.clientHeight >= window.innerHeight){
+        if (drop.location.y + drop.element.clientHeight >= window.innerHeight) {
             drop.velocity.x = 0;
             drop.velocity.y = 0;
             drop.location.y = window.innerHeight - drop.element.clientHeight;
             drop.landed = true;
             drop.element.classList.add('landed');
             const { x } = drop.location;
-            const score = x => ((1-Math.abs(window.innerWidth/2-x))/window.innerWidth/2)*100;
-            console.log(score);
+            //const score = ((1 - Math.abs(window.innerWidth / 2 - x)) / window.innerWidth / 2) * 100;
+            const score = Math.abs(window.innerWidth / 2 - x);
+            if (score <= target.clientWidth) {
+                console.log('Target hit', drop);
+                console.log(score);
+            }
         }
     });
 }
 
-function draw(){
+function draw() {
     drops.forEach(updateDropPosition);
 }
 
@@ -77,7 +82,7 @@ emotes.forEach(doDrop);
 
 doDrop('https://static-cdn.jtvnw.net/jtv_user_pictures/3ab4df77-c5e0-4c9f-9bf0-19ed841a6fb2-profile_image-70x70.png', true);
 
-function gameLoop(){
+function gameLoop() {
     update();
     draw();
     requestAnimationFrame(gameLoop);
