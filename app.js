@@ -1,5 +1,6 @@
 const target = document.querySelector('.target');
 const drops = [];
+const leaderBoard = document.querySelector('.leader-board');
 
 function createDropElement(url, isAvatar = false) {
     const div = document.createElement('div');
@@ -40,6 +41,7 @@ function updateDropPosition(drop) {
 }
 
 function update() {
+    const targetHalftWidth = target.clientWidth / 2;
     drops.forEach(drop => {
         if (drop.landed) return;
         drop.location.x += drop.velocity.x;
@@ -60,9 +62,11 @@ function update() {
             const { x } = drop.location;
             //const score = ((1 - Math.abs(window.innerWidth / 2 - x)) / window.innerWidth / 2) * 100;
             const score = Math.abs(window.innerWidth / 2 - x);
-            if (score <= target.clientWidth) {
+            if (score <= targetHalftWidth) {
                 console.log('Target hit', drop);
-                console.log(score);
+                const finalScore = (1 - (score / targetHalftWidth)) * 100;
+                console.log(finalScore);
+                leaderBoard.style.display = 'block';
             }
         }
     });
@@ -89,3 +93,20 @@ function gameLoop() {
 }
 
 gameLoop();
+
+
+const client = new tmi.Client({
+    connection: {
+        secure: true,
+        reconnect: true
+    },
+    channels: ['my-name']
+});
+
+client.on('message', (channel, tags, message) => {
+    // console.log(`${tags['display-name']}: ${message}`);
+
+    if (message.startsWith('!drop')) {
+        console.log(tags.username, message, tags);
+    }
+});

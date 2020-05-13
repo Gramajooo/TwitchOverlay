@@ -4,6 +4,23 @@ body{
     background: #333;
 }
 
+h4{
+    margin: 0;
+    padding: 0;
+}
+
+.leader-board{
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-weight: bold;
+    font-family: sans-serif;
+    padding: 1rem;
+}
+
 .target{
     height: auto;
     width: 17vmin;
@@ -15,7 +32,7 @@ body{
 
 .drop{
     position:  fixed;
-    width: 150px;
+    width: 100px;
     display: inline-block;
     transform: rotate(10deg);
     animation: sway 1s infinite alternate ease-in-out;
@@ -39,8 +56,8 @@ body{
 .drop .user-image{
     display: block;
     margin: 0 auto;
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     margin-top: -10px;
 }
 
